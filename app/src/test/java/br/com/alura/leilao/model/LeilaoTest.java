@@ -6,56 +6,73 @@ import org.junit.Test;
 
 public class LeilaoTest {
 
-    @Test
-    public void getDescricaoWhenReceiveDescriptionShouldReturnDescriptio() {
-        Leilao console = new Leilao("console");
+    private final Leilao CONSOLE = new Leilao("console");
+    private final Usuario JOHN = new Usuario("John");
 
-        String description = console.getDescricao();
+    @Test
+    public void getDescription_WhenReceiveDescription_ShouldReturnDescription() {
+        String description = CONSOLE.getDescricao();
 
         assertEquals("console", description);
     }
 
     @Test
-    public void getMaiorLanceWhenReceiveOneLanceShouldReturnHighestBid() {
-        Leilao console = new Leilao("console");
-        console.propoe(new Lance(new Usuario("John"), 200.0));
+    public void getMaiorLance_WhenReceiveOneBid_ShouldReturnHighestBid() {
+        CONSOLE.propoe(new Lance(JOHN, 200.0));
 
-        double maiorLance = console.getMaiorLance();
+        double highestBid = CONSOLE.getMaiorLance();
 
-        assertEquals(200.0, maiorLance, 0.0001);
+        assertEquals(200.0, highestBid, 0.0001);
 
     }
 
     @Test
-    public void getMaiorLanceWhenReceiveBidInAscendingOrderShouldReturnHighestBid() {
-        Leilao monitor = new Leilao("Monitor");
-        monitor.propoe(new Lance(new Usuario("Igor"), 300.0));
-        monitor.propoe(new Lance(new Usuario("Joh"), 700.0));
+    public void getMaiorLance_WhenReceiveBidInAscendingOrder_ShouldReturnHighestBid() {
+        CONSOLE.propoe(new Lance(new Usuario("Igor"), 300.0));
+        CONSOLE.propoe(new Lance(JOHN, 700.0));
 
-        double highestBidMonitor = monitor.getMaiorLance();
+        double highestBid = CONSOLE.getMaiorLance();
 
-        assertEquals(700.0, highestBidMonitor, 0.0001);
+        assertEquals(700.0, highestBid, 0.0001);
     }
 
     @Test
-    public void getMaiorLanceWhenReceiveBidInDescendingOrderShouldReturnHighestBid() {
-        Leilao car = new Leilao("carro");
-        car.propoe(new Lance(new Usuario("Igor"), 3500.0));
-        car.propoe(new Lance(new Usuario("John"), 1500.0));
-        car.propoe(new Lance(new Usuario("Tadeu"), 500.0));
+    public void getMaiorLance_WhenReceiveBidInDescendingOrder_ShouldReturnHighestBid() {
+        CONSOLE.propoe(new Lance(new Usuario("Igor"), 3500.0));
+        CONSOLE.propoe(new Lance(JOHN, 1500.0));
 
-        double highestBidCar = car.getMaiorLance();
+        double highestBid = CONSOLE.getMaiorLance();
 
-        assertEquals(3500.0, highestBidCar, 0.0001);
+        assertEquals(3500.0, highestBid, 0.0001);
     }
 
     @Test
-    public void getMenorLance() {
-        Leilao console = new Leilao("console");
-        console.propoe(new Lance(new Usuario("John"), 30.0));
+    public void should_ReturnSmallestBid_WhenReceiveJustOneBid() {
+        CONSOLE.propoe(new Lance(JOHN, 30.0));
 
-        double menorLance = console.getMenorLance();
+        double smallestBid = CONSOLE.getMenorLance();
 
-        assertEquals(30.0, menorLance, 0.0001);
+        assertEquals(30.0, smallestBid, 0.0001);
+    }
+
+    @Test
+    public void should_ReturnReturnSmallestBid_WhenReceiveBidInAscendingOrder() {
+        CONSOLE.propoe(new Lance(new Usuario("Igor"), 300.0));
+        CONSOLE.propoe(new Lance(JOHN, 700.0));
+
+        double smallestBid = CONSOLE.getMenorLance();
+
+        assertEquals(300.0, smallestBid, 0.0001);
+    }
+
+    @Test
+    public void should_ReturnReturnSmallestBid_WhenReceiveBidInDescendingOrder() {
+        CONSOLE.propoe(new Lance(new Usuario("Igor"), 800.0));
+        CONSOLE.propoe(new Lance(JOHN, 350.0));
+        CONSOLE.propoe(new Lance(JOHN, 200.0));
+
+        double smallestBid = CONSOLE.getMenorLance();
+
+        assertEquals(200.0, smallestBid, 0.0001);
     }
 }
